@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATOMVERSE: THE ATOMIC MISSION – SAVE THE UNIVERSE</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            dark: '#050814',
+                            card: 'rgba(15, 23, 42, 0.85)',
+                            border: '#1e293b',
+                            blue: '#00f0ff',
+                            purple: '#7000ff',
+                            neonPink: '#ff007f',
+                            cyan: '#00f3ff',
+                            green: '#00ff66',
+                            yellow: '#ffcc00'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #030712;
+            color: #f8fafc;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+
+        /* Neon Glow Effects */
+        .glow-blue {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5), inset 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+        .glow-purple {
+            box-shadow: 0 0 15px rgba(112, 0, 255, 0.5), inset 0 0 10px rgba(112, 0, 255, 0.3);
+        }
+        .text-glow-blue {
+            text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+        }
+        .text-glow-purple {
+            text-shadow: 0 0 10px #7000ff, 0 0 20px #7000ff;
+        }
+        .text-glow-green {
+            text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66;
+        }
+
+        /* Sci-Fi Glass Panel */
+        .cyber-panel {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.75) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 1rem;
+            position: relative;
+        }
+        .cyber-panel::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: 10%; right: 10%; height: 2px;
+            background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+        }
+
+        /* Specific Level Environment Themes */
+        .level-env-1 {
+            background: radial-gradient(circle at center, rgba(0, 240, 255, 0.15) 0%, rgba(5, 8, 20, 0.95) 75%);
+            border-color: rgba(0, 240, 255, 0.5);
+        }
+        .level-env-2 {
+            background: radial-gradient(circle at top right, rgba(112, 0, 255, 0.18) 0%, rgba(5, 8, 20, 0.95) 80%);
+            border-color: rgba(112, 0, 255, 0.5);
+        }
+        .level-env-3 {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.85) 100%);
+            border-color: rgba(168, 85, 247, 0.5);
+        }
+        .level-env-4 {
+            background: radial-gradient(ellipse at bottom, rgba(56, 189, 248, 0.2) 0%, rgba(3, 7, 18, 0.95) 85%);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+        .level-env-5 {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(20, 83, 45, 0.3) 100%);
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+        .level-env-6 {
+            background: radial-gradient(circle at top left, rgba(236, 72, 153, 0.2) 0%, rgba(5, 8, 20, 0.95) 80%);
+            border-color: rgba(236, 72, 153, 0.5);
+        }
+        .level-env-7 {
+            background: radial-gradient(circle at center, rgba(239, 68, 68, 0.25) 0%, rgba(5, 8, 20, 0.98) 85%);
+            border-color: rgba(239, 68, 68, 0.6);
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.2);
+        }
+
+        /* Custom Cyber Buttons */
+        .cyber-btn {
+            position: relative;
+            transition: all 0.2s ease-in-out;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            overflow: hidden;
+        }
+        .cyber-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            filter: brightness(1.2);
+        }
+        .cyber-btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+        
+        /* Drag & Drop Highlight */
+        .drop-target {
+            transition: all 0.3s ease;
+        }
+        .drop-target.hovered {
+            background-color: rgba(0, 240, 255, 0.25) !important;
+            border-color: #00f0ff !important;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+        }
+
+        /* Pulse Animations */
+        @keyframes pulse-slow {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        .pulse-element {
+            animation: pulse-slow 3s infinite ease-in-out;
+        }
+
+        /* Floating elements animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-anim {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050814; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; border: 1px solid #00f0ff; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative selection:bg-cyan-500 selection:text-black">
+
+    <!-- Background Animated Stars Canvas -->
+    <canvas id="bgCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- TOP NAV / GLOBAL HEADER -->
+    <header class="relative z-10 w-full px-4 py-3 bg-slate-950/80 backdrop-blur-md border-b border-cyan-500/30 flex justify-between items-center">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="game.showScreen('menuScreen')">
+            <div class="w-10 h-10 rounded-full bg-cyan-500/20 border border-cyan-400 flex items-center justify-center glow-blue">
+                <i class="fa-solid font-orbitron text-cyan-400 text-xl">⚛</i>
+            </div>
+            <div>
+                <h1 class="font-orbitron font-extrabold text-lg sm:text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
+                    ATOMVERSE
+                </h1>
+                <p class="text-xs font-semibold text-slate-400 tracking-widest uppercase">THE ATOMIC MISSION – SAVE THE UNIVERSE</p>
+            </div>
+        </div>
+
+        <!-- Global Quick Info & Audio Controls -->
+        <div class="flex items-center gap-4">
+            <button id="soundToggleBtn" onclick="soundManager.toggleSound()" class="p-2 rounded-lg bg-slate-800/80 border border-slate-700 text-cyan-400 hover:border-cyan-400 transition" title="Toggle Sound">
+                <i id="soundIcon" class="fa-solid fa-volume-high text-lg"></i>
+            </button>
+            <div id="globalPlayerBadge" class="hidden sm:flex items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-full border border-cyan-500/40">
+                <i class="fa-solid fa-user-astronaut text-cyan-400"></i>
+                <span id="globalPlayerName" class="font-orbitron text-sm text-slate-200">Agen Atom</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="relative z-10 flex-grow flex items-center justify-center p-3 sm:p-6 w-full max-w-7xl mx-auto">
+        
+        <!-- ================= HALAMAN 1: MAIN MENU ================= -->
+        <section id="menuScreen" class="w-full max-w-4xl cyber-panel p-6 sm:p-10 text-center flex flex-col items-center">
+            <!-- Animated Title Logo -->
+            <div class="relative mb-6 float-anim">
+                <div class="w-28 h-28 mx-auto mb-2 relative flex items-center justify-center">
+                    <div class="absolute inset-0 rounded-full border-2 border-dashed border-cyan-400 animate-spin" style="animation-duration: 15s;"></div>
+                    <div class="absolute inset-2 rounded-full border-2 border-purple-500 animate-spin" style="animation-duration: 8s; animation-direction: reverse;"></div>
+                    <i class="fa-solid fa-atom text-6xl text-cyan-300 text-glow-blue"></i>
+                </div>
+                <h1 class="font-orbitron font-black text-4xl sm:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-500 tracking-widest drop-shadow-lg">
+                    ATOMVERSE
+                </h1>
+                <p class="font-orbitron text-sm sm:text-lg text-cyan-400 tracking-widest mt-1">THE ATOMIC MISSION – SAVE THE UNIVERSE</p>
+            </div>
+
+            <!-- Avatars Showcase -->
+            <div class="flex items-center justify-center gap-6 sm:gap-12 mb-8">
+                <!-- Prof Proton Avatar -->
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-blue-600 to-cyan-400 p-0.5 border-2 border-cyan-300 glow-blue">
+                        <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center overflow-hidden">
+                            <span class="text-3xl">👨‍🔬</span>
+                        </div>
+                    </div>
+                    <span class="font-orbitron text-xs sm:text-sm text-cyan-300 mt-2 font-bold">PROF. PROTON</span>
+                </div>
+
+                <div class="text-cyan-500 font-orbitron font-bold text-xl">VS</div>
+
+                <!-- Dr Neutron Avatar -->
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 p-0.5 border-2 border-purple-400 glow-purple">
+                        <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center overflow-hidden">
+                            <span class="text-3xl">🦹‍♂️</span>
+                        </div>
+                    </div>
+                    <span class="font-orbitron text-xs sm:text-sm text-purple-400 mt-2 font-bold">DR. NEUTRON</span>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="w-full max-w-md space-y-3 sm:space-y-4">
+                <button onclick="game.startFromMenu()" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-orbitron font-extrabold text-lg glow-blue hover:from-cyan-400 hover:to-blue-500 transition cyber-btn flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-play"></i> START GAME
+                </button>
+                <button onclick="game.showScreen('storyScreen')" class="w-full py-3 px-6 rounded-xl bg-slate-900 border border-purple-500/50 hover:border-purple-400 text-purple-300 font-orbitron font-bold hover:bg-purple-950/40 transition cyber-btn flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-book-open"></i> STORY MODE
+                </button>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="game.openModal('howToPlayModal')" class="py-2.5 px-4 rounded-xl bg-slate-900 border border-cyan-500/40 hover:border-cyan-400 text-cyan-300 font-orbitron text-sm font-semibold hover:bg-slate-800 transition cyber-btn">
+                        <i class="fa-solid fa-circle-info mr-1"></i> CARA MAIN
+                    </button>
+                    <button onclick="game.showDashboard()" class="py-2.5 px-4 rounded-xl bg-slate-900 border border-cyan-500/40 hover:border-cyan-400 text-cyan-300 font-orbitron text-sm font-semibold hover:bg-slate-800 transition cyber-btn">
+                        <i class="fa-solid fa-map-location-dot mr-1"></i> PETA LEVEL
+                    </button>
+                </div>
+                <button onclick="game.openModal('achievementModal')" class="w-full py-2.5 px-6 rounded-xl bg-slate-900/80 border border-slate-700 hover:border-yellow-400 text-yellow-400 font-orbitron text-sm font-bold hover:bg-slate-800 transition cyber-btn flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-trophy"></i> ACHIEVEMENT & PENCAPAIAN
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= HALAMAN 2: STORY MODE ================= -->
+        <section id="storyScreen" class="hidden w-full max-w-4xl cyber-panel p-6 sm:p-8">
+            <div class="flex items-center gap-3 border-b border-cyan-500/30 pb-4 mb-6">
+                <span class="text-3xl">🌌</span>
+                <div>
+                    <h2 class="font-orbitron text-2xl text-cyan-300 font-bold">ATOMVERSE: THE ATOMIC MISSION – SAVE THE UNIVERSE</h2>
+                    <p class="text-xs text-slate-400">Laporan Transmisi Prof. Proton - Misi Tahun 2099</p>
+                </div>
+            </div>
+
+            <!-- Dialogue Visual Box -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-center mb-8">
+                <div class="flex flex-col items-center text-center md:col-span-1">
+                    <div class="w-28 h-28 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 p-1 glow-blue mb-2">
+                        <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-5xl">
+                            👨‍🔬
+                        </div>
+                    </div>
+                    <span class="font-orbitron text-sm font-bold text-cyan-300">PROF. PROTON</span>
+                    <span class="text-xs text-slate-400">Ketua Akademi Sains Atom</span>
+                </div>
+                
+                <div class="md:col-span-3 bg-slate-950/80 p-5 rounded-xl border border-cyan-500/30 relative">
+                    <div class="absolute -left-3 top-10 hidden md:block w-0 h-0 border-t-8 border-t-transparent border-r-8 border-r-cyan-500/30 border-b-8 border-b-transparent"></div>
+                    <div id="typewriterText" class="text-slate-200 text-base leading-relaxed min-h-[120px] font-medium">
+                        <!-- Filled by JS typewriter -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Villain Warning Box -->
+            <div class="bg-purple-950/30 border border-purple-500/40 rounded-xl p-4 flex items-center gap-4 mb-6">
+                <span class="text-4xl">🦹‍♂️</span>
+                <div>
+                    <h4 class="font-orbitron text-sm font-bold text-purple-400">PERINGATAN DARI DR. NEUTRON!</h4>
+                    <p class="text-xs text-slate-300">"Semua susunan isotop dan konfigurasi elektron telah kualihkan! Tanpa Bintang Energi, alam semesta akan hancur!"</p>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex justify-between items-center pt-4 border-t border-slate-800">
+                <button onclick="game.showScreen('menuScreen')" class="px-5 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-orbitron text-sm font-semibold transition">
+                    <i class="fa-solid fa-arrow-left mr-2"></i>KEMBALI
+                </button>
+                <button onclick="game.showDashboard()" class="px-8 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-orbitron font-extrabold text-base glow-blue hover:brightness-110 transition cyber-btn">
+                    LANJUTKAN MISI <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= HALAMAN 3: DASHBOARD & PETA LEVEL ================= -->
+        <section id="dashboardScreen" class="hidden w-full max-w-5xl space-y-6">
+            <!-- Player Stats Top Banner -->
+            <div class="cyber-panel p-4 sm:p-6 grid grid-cols-2 sm:grid-cols-4 gap-4 items-center">
+                <!-- Name Profile -->
+                <div class="col-span-2 sm:col-span-1 border-b sm:border-b-0 sm:border-r border-slate-700/60 pb-3 sm:pb-0 pr-3">
+                    <label class="text-xs text-slate-400 font-semibold block mb-1">NAMA AGEN ATOM:</label>
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="playerNameInput" value="Agen Atom" onchange="game.updatePlayerName(this.value)" class="bg-slate-950 border border-cyan-500/50 rounded-lg px-3 py-1.5 text-cyan-300 font-orbitron font-bold text-sm w-full focus:outline-none focus:border-cyan-400">
+                    </div>
+                </div>
+
+                <!-- Score -->
+                <div class="flex items-center gap-3 justify-center sm:justify-start">
+                    <div class="w-10 h-10 rounded-lg bg-cyan-950 border border-cyan-500/50 flex items-center justify-center text-cyan-400 text-xl font-bold">
+                        💎
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 block font-semibold">TOTAL POIN</span>
+                        <span id="dashScore" class="font-orbitron font-extrabold text-xl text-cyan-300">0</span>
+                    </div>
+                </div>
+
+                <!-- Energy Stars -->
+                <div class="flex items-center gap-3 justify-center sm:justify-start">
+                    <div class="w-10 h-10 rounded-lg bg-yellow-950 border border-yellow-500/50 flex items-center justify-center text-yellow-400 text-xl">
+                        ⭐
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 block font-semibold">BINTANG ENERGI</span>
+                        <span id="dashStars" class="font-orbitron font-extrabold text-xl text-yellow-400">0 / 7</span>
+                    </div>
+                </div>
+
+                <!-- Rank Status -->
+                <div class="flex items-center gap-3 justify-center sm:justify-start">
+                    <div class="w-10 h-10 rounded-lg bg-purple-950 border border-purple-500/50 flex items-center justify-center text-purple-400 text-xl">
+                        🎖️
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 block font-semibold">GELAR SAAT INI</span>
+                        <span id="dashRank" class="font-orbitron font-bold text-sm text-purple-300">AGEN REKRUT</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LEVEL MAP SECTION -->
+            <div class="cyber-panel p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="font-orbitron text-xl text-cyan-300 font-bold">PETA PERJALANAN PENYELAMATAN ATOM</h3>
+                        <p class="text-xs text-slate-400">Selesaikan setiap level untuk membuka level berikutnya dan kumpulkan 7 Bintang Energi!</p>
+                    </div>
+                    <button onclick="game.resetProgress()" class="text-xs text-slate-400 hover:text-red-400 underline transition">
+                        Reset Progres
+                    </button>
+                </div>
+
+                <!-- Interactive Map Nodes Grid -->
+                <div class="relative py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Nodes generated dynamically via JavaScript -->
+                    <div id="levelNodesContainer" class="contents"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= HALAMAN 4: LEVEL GAME CONTAINER ================= -->
+        <section id="gameplayScreen" class="hidden w-full max-w-5xl space-y-4">
+            <!-- Game HUD Header -->
+            <div id="levelHudHeader" class="cyber-panel p-4 flex flex-wrap justify-between items-center gap-4 transition-all duration-500">
+                <div class="flex items-center gap-3">
+                    <span id="levelBadge" class="px-3 py-1 rounded-md bg-cyan-950 border border-cyan-400 text-cyan-300 font-orbitron text-xs font-bold">
+                        LEVEL 1
+                    </span>
+                    <div>
+                        <h3 id="levelTitle" class="font-orbitron font-bold text-lg text-slate-100">THE ATOMIC CORE</h3>
+                        <p id="levelSubtitle" class="text-[11px] font-orbitron text-cyan-400">SEKTOR 1: LABORATORIUM INTI ATOM</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <!-- Real-time Hearts -->
+                    <div class="flex items-center gap-1">
+                        <span class="text-xs text-slate-400 font-semibold mr-1">NYAWA:</span>
+                        <div id="heartsContainer" class="flex gap-1 text-red-500 text-lg">
+                            <i class="fa-solid fa-heart"></i>
+                            <i class="fa-solid fa-heart"></i>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+
+                    <!-- Level Score -->
+                    <div class="text-center">
+                        <span class="text-xs text-slate-400 font-semibold block">SKOR</span>
+                        <span id="gameScore" class="font-orbitron text-cyan-300 font-bold">0</span>
+                    </div>
+
+                    <!-- Hint Button -->
+                    <button onclick="game.showHint()" class="px-3 py-1.5 rounded-lg bg-yellow-950/60 border border-yellow-500/50 hover:border-yellow-400 text-yellow-300 text-xs font-orbitron font-bold flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-lightbulb"></i> HINT PROF. PROTON
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dialogue & Instruction Banner -->
+            <div id="levelInstructionBanner" class="bg-slate-900/90 border border-cyan-500/30 rounded-xl p-3 sm:p-4 flex items-center gap-4 transition-all duration-500">
+                <div class="w-12 h-12 rounded-full bg-blue-600/30 border border-cyan-400 flex-shrink-0 flex items-center justify-center text-2xl glow-blue">
+                    👨‍🔬
+                </div>
+                <div class="flex-grow">
+                    <span class="text-xs text-cyan-400 font-orbitron font-bold block">PETUNJUK PROF. PROTON</span>
+                    <p id="levelInstructionText" class="text-sm text-slate-200">
+                        Instruksi misi akan muncul di sini...
+                    </p>
+                </div>
+            </div>
+
+            <!-- DYNAMIC LEVEL CONTENT AREA -->
+            <div id="levelStageArea" class="cyber-panel p-4 sm:p-6 min-h-[440px] flex flex-col justify-center transition-all duration-500">
+                <!-- Level specific HTML will be injected here dynamically -->
+            </div>
+
+            <!-- Gameplay Navigation Controls -->
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="game.showDashboard()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-orbitron font-bold transition">
+                    <i class="fa-solid fa-map mr-1"></i> KE PETA LEVEL
+                </button>
+                <div id="levelActionButtonContainer">
+                    <!-- Action buttons dynamically inserted -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= HALAMAN KEMENANGAN ================= -->
+        <section id="victoryScreen" class="hidden w-full max-w-3xl cyber-panel p-8 text-center flex flex-col items-center">
+            <div class="w-24 h-24 rounded-full bg-yellow-500/20 border-2 border-yellow-400 flex items-center justify-center text-5xl mb-4 text-yellow-300 animate-bounce glow-yellow">
+                🏆
+            </div>
+
+            <h2 class="font-orbitron text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500 tracking-wider mb-2">
+                SELAMAT! UNIVERSE TERSELAMATKAN!
+            </h2>
+            <p class="text-cyan-300 font-orbitron font-bold text-lg mb-6">Dr. Neutron Telah Berhasil Dikalahkan!</p>
+
+            <!-- 7 Stars Showcase -->
+            <div class="flex gap-2 sm:gap-3 text-3xl sm:text-4xl text-yellow-400 mb-6">
+                ⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐
+            </div>
+
+            <!-- Certificate Card -->
+            <div class="w-full bg-slate-950/80 border border-yellow-500/40 rounded-xl p-6 mb-8 text-left relative overflow-hidden">
+                <div class="absolute -right-8 -bottom-8 opacity-10 text-9xl">⚛</div>
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs text-yellow-400 font-orbitron tracking-widest font-bold">AKADEMI SAINS ATOMVERSE</span>
+                    <span class="text-xs text-slate-400">STATUS: TERVERIFIKASI</span>
+                </div>
+                <h3 id="victoryPlayerName" class="font-orbitron text-2xl text-cyan-300 font-extrabold mb-1">AGEN ATOM</h3>
+                <p class="text-sm text-slate-300 mb-4">Diberikan Gelar Resmi Kehormatan:</p>
+                <div class="inline-block px-4 py-2 rounded-lg bg-gradient-to-r from-purple-900 to-indigo-900 border border-purple-400 text-purple-200 font-orbitron font-black text-xl mb-4 glow-purple">
+                    🌟 MASTER ATOM UNIVERSE 🌟
+                </div>
+                <div class="grid grid-cols-2 gap-4 border-t border-slate-800 pt-3 text-sm">
+                    <div>
+                        <span class="text-slate-400 text-xs block">TOTAL SKOR PENYELAMATAN</span>
+                        <span id="victoryScore" class="font-orbitron text-cyan-300 font-bold text-lg">0</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 text-xs block">BINTANG ENERGI DIKUMPULKAN</span>
+                        <span class="font-orbitron text-yellow-400 font-bold text-lg">7 / 7</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="game.showResultsScreen()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-orbitron font-extrabold text-base glow-blue hover:brightness-110 transition cyber-btn">
+                    <i class="fa-solid fa-chart-column mr-2"></i> LIHAT HASIL EVALUASI
+                </button>
+                <button onclick="game.resetProgress(); game.showDashboard();" class="px-6 py-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-400 text-cyan-300 font-orbitron font-bold text-base transition cyber-btn">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> MAIN LAGI
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= HALAMAN HASIL / EVALUASI ================= -->
+        <section id="resultsScreen" class="hidden w-full max-w-4xl cyber-panel p-6 sm:p-8 space-y-6">
+            <div class="flex justify-between items-center border-b border-cyan-500/30 pb-4">
+                <div>
+                    <h2 class="font-orbitron text-2xl text-cyan-300 font-bold">LAPORAN HASIL EVALUASI PEMBELAJARAN</h2>
+                    <p class="text-xs text-slate-400">Analisis Kemampuan Kognitif & Ketuntasan Materi Struktur Atom</p>
+                </div>
+                <button onclick="game.showDashboard()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-orbitron font-bold hover:bg-slate-700">
+                    KEMBALI KE MAP
+                </button>
+            </div>
+
+            <!-- Category & Banner Section -->
+            <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 p-6 rounded-xl border border-cyan-500/40 text-center relative overflow-hidden">
+                <span class="text-xs font-orbitron text-slate-400 block mb-1">KATEGORI KETUNTASAN SISWA</span>
+                <div id="evalCategoryBadge" class="inline-block px-6 py-2 rounded-xl font-orbitron font-black text-2xl my-2 text-cyan-300 glow-blue bg-cyan-950/60 border border-cyan-400">
+                    MASTER ATOM
+                </div>
+                <p id="evalCategoryDesc" class="text-xs text-slate-300 max-w-md mx-auto mt-1">Siswa telah menguasai seluruh indikator capaian pembelajaran struktur atom dengan sempurna!</p>
+            </div>
+
+            <!-- Summary Stat Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800">
+                    <span class="text-xs text-slate-400 font-semibold block mb-1">NAMA SISWA</span>
+                    <span id="resPlayerName" class="font-orbitron text-cyan-300 font-bold text-sm">Agen Atom</span>
+                </div>
+                <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800">
+                    <span class="text-xs text-slate-400 font-semibold block mb-1">SKOR TOTAL</span>
+                    <span id="resTotalScore" class="font-orbitron text-yellow-400 font-extrabold text-lg">0</span>
+                </div>
+                <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800">
+                    <span class="text-xs text-slate-400 font-semibold block mb-1">PERSENTASE KETUNTASAN</span>
+                    <span id="resAccuracy" class="font-orbitron text-green-400 font-extrabold text-lg">100%</span>
+                </div>
+                <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800">
+                    <span class="text-xs text-slate-400 font-semibold block mb-1">LEVEL COMPLETED</span>
+                    <span id="resCompletedLevels" class="font-orbitron text-cyan-400 font-bold text-sm">0 / 7</span>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Stats -->
+            <div class="grid grid-cols-3 gap-3 text-center">
+                <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                    <span class="text-xs text-slate-400 block">SOAL DIJAWAB</span>
+                    <span id="resTotalAnswered" class="font-orbitron font-bold text-slate-200">0</span>
+                </div>
+                <div class="bg-slate-950/60 p-3 rounded-lg border border-green-500/30">
+                    <span class="text-xs text-green-400 block">JAWABAN BENAR</span>
+                    <span id="resCorrectCount" class="font-orbitron font-bold text-green-400">0</span>
+                </div>
+                <div class="bg-slate-950/60 p-3 rounded-lg border border-red-500/30">
+                    <span class="text-xs text-red-400 block">JAWABAN SALAH</span>
+                    <span id="resWrongCount" class="font-orbitron font-bold text-red-400">0</span>
+                </div>
+            </div>
+
+            <!-- Material Remedial Box -->
+            <div class="bg-slate-950/90 border border-purple-500/40 rounded-xl p-5 space-y-3">
+                <h4 class="font-orbitron text-purple-300 font-bold text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark text-yellow-400"></i> MATERI YANG PERLU DIPELAJARI KEMBALI
+                </h4>
+                <div id="remedialMaterialsList" class="space-y-2 text-slate-300 text-xs leading-relaxed">
+                    <!-- Injected dynamically by JS -->
+                </div>
+            </div>
+
+            <!-- Print / Export Action -->
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="game.showDashboard()" class="px-5 py-2.5 rounded-lg bg-slate-800 text-slate-300 font-orbitron text-xs font-bold hover:bg-slate-700">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> KEMBALI KE MAP
+                </button>
+                <button onclick="window.print()" class="px-6 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-orbitron text-xs font-bold transition flex items-center gap-2 glow-blue">
+                    <i class="fa-solid fa-print"></i> CETAK LAPORAN EVALUASI
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 w-full py-3 px-4 bg-slate-950/90 border-t border-slate-900 text-center text-xs text-slate-500">
+        ATOMVERSE: THE ATOMIC MISSION – SAVE THE UNIVERSE &copy; 2099 - Media Pembelajaran Sains Interaktif Struktur Atom
+    </footer>
+
+    <!-- MODAL: HINT PROF PROTON -->
+    <div id="hintModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+        <div class="cyber-panel w-full max-w-md p-6 relative">
+            <button onclick="game.closeModal('hintModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center gap-3 mb-4">
+                <span class="text-3xl">💡</span>
+                <div>
+                    <h3 class="font-orbitron text-lg font-bold text-yellow-400">PETUNJUK PROF. PROTON</h3>
+                    <p class="text-xs text-slate-400">Bantuan Teoritis Pembelajaran</p>
+                </div>
+            </div>
+            <div id="hintModalContent" class="bg-slate-950/80 p-4 rounded-xl border border-yellow-500/30 text-slate-200 text-sm leading-relaxed mb-4">
+                Petunjuk akan ditampilkan di sini...
+            </div>
+            <button onclick="game.closeModal('hintModal')" class="w-full py-2.5 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-orbitron font-bold text-sm">
+                SAYA MENGERTI
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL: FEEDBACK POPUP (BENAR / SALAH) -->
+    <div id="feedbackModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+        <div id="feedbackPanel" class="cyber-panel w-full max-w-md p-6 text-center relative border-2">
+            <div id="feedbackIcon" class="text-5xl mb-3 animate-bounce">
+                ✅
+            </div>
+            <h3 id="feedbackTitle" class="font-orbitron text-xl font-bold mb-2">
+                HEBAT, AGEN ATOM!
+            </h3>
+            <p id="feedbackText" class="text-slate-200 text-sm mb-4">
+                Pembahasan jawaban...
+            </p>
+            <div id="feedbackExplanation" class="bg-slate-950/80 p-3 rounded-lg border text-xs text-slate-300 text-left mb-6">
+                <!-- Scientific explanation -->
+            </div>
+            <button id="feedbackActionBtn" onclick="game.closeFeedback()" class="w-full py-3 rounded-xl font-orbitron font-bold text-sm cyber-btn">
+                LANJUTKAN
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL: CARA MAIN -->
+    <div id="howToPlayModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+        <div class="cyber-panel w-full max-w-2xl p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="game.closeModal('howToPlayModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="font-orbitron text-xl font-bold text-cyan-300 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-gamepad"></i> PANDUAN CARA BERMAIN
+            </h3>
+            <div class="space-y-4 text-slate-300 text-sm leading-relaxed">
+                <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                    <h4 class="font-orbitron font-bold text-cyan-400 text-xs mb-1">1. MISI & TARGET</h4>
+                    <p>Selesaikan 7 level misi sains secara berurutan untuk mengumpulkan 7 Bintang Energi dan kalahkan Dr. Neutron pada Level 7.</p>
+                </div>
+                <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                    <h4 class="font-orbitron font-bold text-cyan-400 text-xs mb-1">2. SISTEM POIN DAN NYAWA</h4>
+                    <p>• Jawaban Benar = <strong class="text-green-400">+100 Poin</strong><br>• Jawaban Salah = <strong class="text-red-400">-1 Nyawa</strong> (Setiap level memiliki 3 Nyawa)<br>• Jika nyawa habis, kamu harus mengulang level tersebut.</p>
+                </div>
+                <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                    <h4 class="font-orbitron font-bold text-cyan-400 text-xs mb-1">3. INTERAKSI PERMAINAN</h4>
+                    <p>Gunakan **Klik** atau **Drag and Drop** untuk menempatkan partikel (Proton, Neutron, Elektron), mengonfigurasi kulit atom Bohr, dan mencocokkan kelompok isotop/isobar/isoton.</p>
+                </div>
+            </div>
+            <button onclick="game.closeModal('howToPlayModal')" class="mt-6 w-full py-2.5 rounded-lg bg-cyan-500 text-slate-950 font-orbitron font-bold text-sm">
+                TUTUP PANDUAN
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL: ACHIEVEMENTS -->
+    <div id="achievementModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+        <div class="cyber-panel w-full max-w-md p-6 relative">
+            <button onclick="game.closeModal('achievementModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="font-orbitron text-xl font-bold text-yellow-400 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-trophy"></i> PENCAPAIAN SAINS
+            </h3>
+            <div id="achievementsList" class="space-y-3 max-h-60 overflow-y-auto pr-1">
+                <!-- Dynamic Achievement Items -->
+            </div>
+            <button onclick="game.closeModal('achievementModal')" class="mt-4 w-full py-2.5 rounded-lg bg-slate-800 text-slate-200 font-orbitron text-xs font-bold">
+                TUTUP
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPT APPLICATION CORE LOGIC -->
+    <script>
+        /* ==========================================================================
+           1. AUDIO SYNTHESIZER (Web Audio API - No External Assets Needed)
+           ========================================================================== */
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioContext();
+                }
+            }
+
+            toggleSound() {
+                this.enabled = !this.enabled;
+                const icon = document.getElementById('soundIcon');
+                if (this.enabled) {
+                    icon.className = 'fa-solid fa-volume-high text-lg';
+                } else {
+                    icon.className = 'fa-solid fa-volume-xmark text-lg text-slate-500';
+                }
+            }
+
+            playClick() {
+                if (!this.enabled) return;
+                this.init();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.05);
+            }
+
+            playCorrect() {
+                if (!this.enabled) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            }
+
+            playWrong() {
+                if (!this.enabled) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.linearRampToValueAtTime(110, now + 0.25);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            }
+
+            playVictory() {
+                if (!this.enabled) return;
+                this.init();
+                const notes = [440, 554.37, 659.25, 880];
+                notes.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.15, this.ctx.currentTime + idx * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.12 + 0.3);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(this.ctx.currentTime + idx * 0.12);
+                    osc.stop(this.ctx.currentTime + idx * 0.12 + 0.3);
+                });
+            }
+        }
+
+        const soundManager = new SoundFX();
+
+        /* ==========================================================================
+           2. STAR BACKGROUND ANIMATION (CANVAS)
+           ========================================================================== */
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        for (let i = 0; i < 90; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2,
+                speed: Math.random() * 0.4 + 0.1,
+                color: Math.random() > 0.5 ? '#00f0ff' : '#7000ff'
+            });
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                ctx.fillStyle = s.color;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fill();
+                s.y -= s.speed;
+                if (s.y < 0) s.y = canvas.height;
+            });
+            requestAnimationFrame(animateStars);
+        }
+        animateStars();
+
+        /* ==========================================================================
+           3. GAME DATA & STATE MANAGEMENT
+           ========================================================================== */
+        const GAME_LEVELS = [
+            { 
+                id: 1, 
+                title: 'THE ATOMIC CORE', 
+                topic: 'Partikel Penyusun Atom', 
+                indicator: 'Siswa mampu mengidentifikasi letak dan muatan proton (+), neutron (0), dan elektron (-).',
+                hint: 'Proton (+) dan Neutron (0) berada di Inti Atom. Elektron (-) beredar di Kulit Atom!' 
+            },
+            { 
+                id: 2, 
+                title: 'ATOMIC CODE BREAKER', 
+                topic: 'Nomor Atom & Nomor Massa', 
+                indicator: 'Siswa mampu mengkalkulasi jumlah proton, neutron, dan elektron berdasarkan notasi atom netral (ᴬẕX).',
+                hint: 'Nomor Atom (Z) = Jumlah Proton = Jumlah Elektron (Netral). Jumlah Neutron (N) = Nomor Massa (A) - Nomor Atom (Z).' 
+            },
+            { 
+                id: 3, 
+                title: 'ATOMIC IDENTITY', 
+                topic: 'Isotop, Isobar & Isoton', 
+                indicator: 'Siswa mampu mengelompokkan dan membedakan nuklida ke dalam kategori Isotop, Isobar, dan Isoton.',
+                hint: 'Isotop = Proton Sama (Nomor Bawah sama). Isobar = Massa Sama (Nomor Atas sama). Isoton = Neutron Sama (A - Z sama).' 
+            },
+            { 
+                id: 4, 
+                title: 'ELECTRON GALAXY', 
+                topic: 'Konfigurasi Elektron Bohr', 
+                indicator: 'Siswa mampu menyusun konfigurasi elektron Bohr pada kulit K, L, M berdasarkan kapasitas maksimum kulit.',
+                hint: 'Kapasitas Maksimum Kulit Atom Bohr: Kulit K (n=1) = 2 elektron, Kulit L (n=2) = 8 elektron, Kulit M (n=3) = 18 elektron.' 
+            },
+            { 
+                id: 5, 
+                title: 'EVOLUTION OF ATOM', 
+                topic: 'Perkembangan Model Atom', 
+                indicator: 'Siswa mampu mengurutkan serta menganalisis karakteristik model atom Dalton, Thomson, Rutherford, Bohr, dan penemuan neutron.',
+                hint: 'Urutan Sejarah Atom: Dalton (Bola Pejal) ➔ Thomson (Roti Kismis) ➔ Rutherford (Inti Atom) ➔ Bohr (Lintasan/Kulit).' 
+            },
+            { 
+                id: 6, 
+                title: 'ION TRANSFORMATION', 
+                topic: 'Ion Positif (Kation) & Negatif (Anion)', 
+                indicator: 'Siswa mampu menganalisis pelepasan/penerimaan elektron pada pembentukan kation dan anion.',
+                hint: 'Atom MELEPAS elektron ➔ Kation (+). Atom MENERIMA elektron ➔ Anion (-). Jumlah proton TIDAK pernah berubah!' 
+            },
+            { 
+                id: 7, 
+                title: 'FINAL BOSS: DR. NEUTRON', 
+                topic: 'Pertarungan Terakhir Master Atom', 
+                indicator: 'Siswa mampu menyelesaikan permasalahan integrasi seluruh konsep struktur atom secara komprehensif.',
+                hint: 'Gunakan seluruh pengetahuan struktur atommu untuk mengalahkan Dr. Neutron!' 
+            }
+        ];
+
+        class GameEngine {
+            constructor() {
+                this.playerName = 'Agen Atom';
+                this.score = 0;
+                this.unlockedLevel = 1;
+                this.currentLevel = 1;
+                this.lives = 3;
+                this.stars = 0;
+                this.correctAnswersCount = 0;
+                this.wrongAnswersCount = 0;
+
+                // Track wrong topic IDs for remedial recommendation
+                this.failedLevelTopics = new Set();
+
+                // Level internal states
+                this.levelState = {};
+
+                this.loadSavedData();
+            }
+
+            loadSavedData() {
+                const saved = localStorage.getItem('atomverse_save');
+                if (saved) {
+                    try {
+                        const data = JSON.parse(saved);
+                        this.playerName = data.playerName || 'Agen Atom';
+                        this.score = data.score || 0;
+                        this.unlockedLevel = data.unlockedLevel || 1;
+                        this.stars = data.stars || 0;
+                    } catch (e) {
+                        console.error("Error reading save data", e);
+                    }
+                }
+            }
+
+            saveProgress() {
+                const data = {
+                    playerName: this.playerName,
+                    score: this.score,
+                    unlockedLevel: this.unlockedLevel,
+                    stars: this.stars
+                };
+                localStorage.setItem('atomverse_save', JSON.stringify(data));
+            }
+
+            resetProgress() {
+                localStorage.removeItem('atomverse_save');
+                this.score = 0;
+                this.unlockedLevel = 1;
+                this.stars = 0;
+                this.correctAnswersCount = 0;
+                this.wrongAnswersCount = 0;
+                this.updateDashboardUI();
+                soundManager.playClick();
+            }
+
+            updatePlayerName(name) {
+                if (!name.trim()) name = 'Agen Atom';
+                this.playerName = name;
+                document.getElementById('globalPlayerName').innerText = name;
+                this.saveProgress();
+            }
+
+            showScreen(screenId) {
+                soundManager.playClick();
+                const screens = ['menuScreen', 'storyScreen', 'dashboardScreen', 'gameplayScreen', 'victoryScreen', 'resultsScreen'];
+                screens.forEach(id => {
+                    document.getElementById(id).classList.add('hidden');
+                });
+                document.getElementById(screenId).classList.remove('hidden');
+
+                if (screenId === 'storyScreen') {
+                    this.startStoryTypewriter();
+                }
+            }
+
+            startFromMenu() {
+                const saved = localStorage.getItem('atomverse_save');
+                if (saved) {
+                    this.showDashboard();
+                } else {
+                    this.showScreen('storyScreen');
+                }
+            }
+
+            startStoryTypewriter() {
+                const text = "Selamat datang di tahun 2099, Agen Atom! Dr. Neutron telah mengacaukan susunan partikel subatomik di seluruh galaksi. Model atom rusak, nomor massa kacau, dan energi alam semesta meredup. Kami membutuhkan kecerdasanmu untuk merekonstruksi dunia atom dan mengembalikan keseimbangan galaksi!";
+                const container = document.getElementById('typewriterText');
+                container.innerHTML = '';
+                let i = 0;
+                const timer = setInterval(() => {
+                    container.innerHTML += text.charAt(i);
+                    i++;
+                    if (i >= text.length) clearInterval(timer);
+                }, 25);
+            }
+
+            showDashboard() {
+                this.showScreen('dashboardScreen');
+                this.updateDashboardUI();
+            }
+
+            updateDashboardUI() {
+                document.getElementById('playerNameInput').value = this.playerName;
+                document.getElementById('globalPlayerName').innerText = this.playerName;
+                document.getElementById('dashScore').innerText = this.score;
+                document.getElementById('dashStars').innerText = `${this.stars} / 7`;
+
+                let rank = "AGEN REKRUT";
+                if (this.stars >= 7) rank = "MASTER ATOM UNIVERSE";
+                else if (this.stars >= 5) rank = "ASTRONOT KUANTUM";
+                else if (this.stars >= 3) rank = "PAKAR ATOMIK";
+                else if (this.stars >= 1) rank = "AGEN JUNIOR";
+                document.getElementById('dashRank').innerText = rank;
+
+                // Render Map Nodes
+                const container = document.getElementById('levelNodesContainer');
+                container.innerHTML = '';
+
+                GAME_LEVELS.forEach(lvl => {
+                    const isUnlocked = lvl.id <= this.unlockedLevel;
+                    const isCompleted = lvl.id < this.unlockedLevel || (lvl.id === 7 && this.stars === 7);
+
+                    const node = document.createElement('div');
+                    node.className = `cyber-panel p-4 flex flex-col justify-between relative transition duration-300 ${isUnlocked ? 'hover:scale-105 cursor-pointer border-cyan-400' : 'opacity-60 cursor-not-allowed border-slate-800'}`;
+                    if (isUnlocked) {
+                        node.onclick = () => this.startLevel(lvl.id);
+                    }
+
+                    node.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-orbitron text-xs font-bold ${isUnlocked ? 'text-cyan-400' : 'text-slate-500'}">LEVEL ${lvl.id}</span>
+                            <span class="text-base">${isCompleted ? '⭐' : (isUnlocked ? '🔓' : '🔒')}</span>
+                        </div>
+                        <h4 class="font-orbitron font-bold text-sm text-slate-100 mb-1">${lvl.title}</h4>
+                        <p class="text-xs text-slate-400 mb-3">${lvl.topic}</p>
+                        <button class="w-full py-1.5 rounded-lg text-xs font-orbitron font-bold transition ${isUnlocked ? 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 glow-blue' : 'bg-slate-800 text-slate-500'}">
+                            ${isCompleted ? 'MAIN ULANG' : (isUnlocked ? 'MULAI MISI' : 'TERKUNCI')}
+                        </button>
+                    `;
+                    container.appendChild(node);
+                });
+            }
+
+            /* ================= GAMEPLAY CONTROLLER ================= */
+            startLevel(levelId) {
+                this.currentLevel = levelId;
+                this.lives = 3;
+                this.showScreen('gameplayScreen');
+
+                const lvlData = GAME_LEVELS.find(l => l.id === levelId);
+                document.getElementById('levelBadge').innerText = `LEVEL ${lvlData.id}`;
+                document.getElementById('levelTitle').innerText = lvlData.title;
+                document.getElementById('gameScore').innerText = this.score;
+                this.updateHeartsUI();
+
+                // Build Level Specific Stage
+                this.loadLevelStage(levelId);
+            }
+
+            updateHeartsUI() {
+                const container = document.getElementById('heartsContainer');
+                container.innerHTML = '';
+                for (let i = 0; i < 3; i++) {
+                    if (i < this.lives) {
+                        container.innerHTML += `<i class="fa-solid fa-heart text-red-500"></i>`;
+                    } else {
+                        container.innerHTML += `<i class="fa-solid fa-heart text-slate-700"></i>`;
+                    }
+                }
+            }
+
+            showHint() {
+                soundManager.playClick();
+                const lvlData = GAME_LEVELS.find(l => l.id === this.currentLevel);
+                document.getElementById('hintModalContent').innerText = lvlData.hint;
+                this.openModal('hintModal');
+            }
+
+            openModal(modalId) {
+                document.getElementById(modalId).classList.remove('hidden');
+            }
+
+            closeModal(modalId) {
+                soundManager.playClick();
+                document.getElementById(modalId).classList.add('hidden');
+            }
+
+            showFeedback(isCorrect, text, explanation, nextCallback) {
+                const modal = document.getElementById('feedbackModal');
+                const title = document.getElementById('feedbackTitle');
+                const textElem = document.getElementById('feedbackText');
+                const expElem = document.getElementById('feedbackExplanation');
+                const icon = document.getElementById('feedbackIcon');
+                const btn = document.getElementById('feedbackActionBtn');
+                const panel = document.getElementById('feedbackPanel');
+
+                if (isCorrect) {
+                    soundManager.playCorrect();
+                    icon.innerText = '✅';
+                    title.innerText = 'HEBAT, AGEN ATOM! +100 POIN';
+                    title.className = 'font-orbitron text-xl font-bold mb-2 text-green-400 text-glow-green';
+                    panel.className = 'cyber-panel w-full max-w-md p-6 text-center relative border-2 border-green-500';
+                    btn.className = 'w-full py-3 rounded-xl font-orbitron font-bold text-sm bg-green-500 hover:bg-green-400 text-slate-950 cyber-btn';
+                    this.score += 100;
+                    this.correctAnswersCount++;
+                    document.getElementById('gameScore').innerText = this.score;
+                } else {
+                    soundManager.playWrong();
+                    icon.innerText = '⚠️';
+                    title.innerText = 'AWAS! TERKENA JEBAKAN DR. NEUTRON!';
+                    title.className = 'font-orbitron text-xl font-bold mb-2 text-red-400';
+                    panel.className = 'cyber-panel w-full max-w-md p-6 text-center relative border-2 border-red-500';
+                    btn.className = 'w-full py-3 rounded-xl font-orbitron font-bold text-sm bg-red-500 hover:bg-red-400 text-slate-950 cyber-btn';
+                    this.lives--;
+                    this.wrongAnswersCount++;
+                    this.failedLevelTopics.add(this.currentLevel);
+                    this.updateHeartsUI();
+                }
+
+                textElem.innerText = text;
+                expElem.innerText = explanation;
+
+                this.nextFeedbackAction = () => {
+                    this.closeModal('feedbackModal');
+                    if (this.lives <= 0) {
+                        alert('Nyawa kamu habis! Misi gagal. Mari coba lagi!');
+                        this.startLevel(this.currentLevel);
+                    } else if (nextCallback) {
+                        nextCallback();
+                    }
+                };
+
+                modal.classList.remove('hidden');
+            }
+
+            closeFeedback() {
+                if (this.nextFeedbackAction) this.nextFeedbackAction();
+            }
+
+            completeCurrentLevel() {
+                soundManager.playVictory();
+                if (this.currentLevel === this.unlockedLevel && this.unlockedLevel < 7) {
+                    this.unlockedLevel++;
+                }
+                if (this.stars < this.unlockedLevel) {
+                    this.stars = Math.max(this.stars, this.currentLevel);
+                }
+                this.saveProgress();
+
+                if (this.currentLevel === 7) {
+                    this.showVictoryScreen();
+                } else {
+                    alert(`SELAMAT! Level ${this.currentLevel} Berhasil Diselesaikan! Kamu Mendapatkan 1 Bintang Energi! 🌟`);
+                    this.showDashboard();
+                }
+            }
+
+            showVictoryScreen() {
+                this.stars = 7;
+                this.saveProgress();
+                document.getElementById('victoryPlayerName').innerText = this.playerName;
+                document.getElementById('victoryScore').innerText = this.score;
+                this.showScreen('victoryScreen');
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+            }
+
+            showResultsScreen() {
+                document.getElementById('resPlayerName').innerText = this.playerName;
+                document.getElementById('resTotalScore').innerText = this.score;
+                
+                const totalAnswered = this.correctAnswersCount + this.wrongAnswersCount;
+                document.getElementById('resTotalAnswered').innerText = totalAnswered;
+                document.getElementById('resCorrectCount').innerText = this.correctAnswersCount;
+                document.getElementById('resWrongCount').innerText = this.wrongAnswersCount;
+
+                const completedCount = Math.max(0, this.stars);
+                document.getElementById('resCompletedLevels').innerText = `${completedCount} / 7`;
+
+                const accuracy = totalAnswered > 0 ? Math.round((this.correctAnswersCount / totalAnswered) * 100) : 100;
+                document.getElementById('resAccuracy').innerText = `${accuracy}%`;
+
+                // Evaluasi Kategori Berdasarkan Persentase
+                const badge = document.getElementById('evalCategoryBadge');
+                const desc = document.getElementById('evalCategoryDesc');
+
+                if (accuracy >= 90) {
+                    badge.innerText = "🌟 MASTER ATOM (90-100%)";
+                    badge.className = "inline-block px-6 py-2 rounded-xl font-orbitron font-black text-xl my-2 text-yellow-300 glow-yellow bg-yellow-950/60 border border-yellow-400";
+                    desc.innerText = "Luar biasa! Kamu telah menguasai seluruh indikator capaian pembelajaran struktur atom dengan keahlian sempurna.";
+                } else if (accuracy >= 80) {
+                    badge.innerText = "🔬 AHLI ATOM (80-89%)";
+                    badge.className = "inline-block px-6 py-2 rounded-xl font-orbitron font-black text-xl my-2 text-cyan-300 glow-blue bg-cyan-950/60 border border-cyan-400";
+                    desc.innerText = "Sangat Baik! Pemahamanmu terhadap konsep struktur atom, notasi nuklida, dan ion sudah sangat matang.";
+                } else if (accuracy >= 70) {
+                    badge.innerText = "🚀 PENJELAJAH ATOM (70-79%)";
+                    badge.className = "inline-block px-6 py-2 rounded-xl font-orbitron font-black text-xl my-2 text-purple-300 glow-purple bg-purple-950/60 border border-purple-400";
+                    desc.innerText = "Cukup Baik! Kamu berhasil menuntaskan sebagian besar materi, namun masih ada beberapa bagian yang perlu diperdalam.";
+                } else {
+                    badge.innerText = "📚 CALON AGEN ATOM (< 70%)";
+                    badge.className = "inline-block px-6 py-2 rounded-xl font-orbitron font-black text-xl my-2 text-red-300 bg-red-950/60 border border-red-400";
+                    desc.innerText = "Tetap semangat! Kamu disarankan untuk mempelajari kembali materi yang direkomendasikan di bawah ini.";
+                }
+
+                // Remedial Material Analysis
+                const remedialContainer = document.getElementById('remedialMaterialsList');
+                remedialContainer.innerHTML = '';
+
+                if (this.failedLevelTopics.size === 0) {
+                    remedialContainer.innerHTML = `
+                        <div class="p-3 bg-green-950/40 border border-green-500/30 rounded-lg text-green-300 flex items-center gap-2 font-orbitron">
+                            <i class="fa-solid fa-circle-check text-green-400 text-lg"></i>
+                            <span>Selamat! Tidak ada materi yang perlu di-remedial. Semua tantangan diselesaikan tanpa kesalahan!</span>
+                        </div>
+                    `;
+                } else {
+                    this.failedLevelTopics.forEach(lvlId => {
+                        const lvlData = GAME_LEVELS.find(l => l.id === lvlId);
+                        if (lvlData) {
+                            remedialContainer.innerHTML += `
+                                <div class="p-2.5 bg-slate-900 border-l-4 border-yellow-400 rounded-r-lg">
+                                    <span class="font-orbitron font-bold text-cyan-300 block mb-0.5">Level ${lvlData.id}: ${lvlData.title} (${lvlData.topic})</span>
+                                    <p class="text-slate-300"><strong>Capaian:</strong> ${lvlData.indicator}</p>
+                                    <p class="text-slate-400 text-[11px] mt-0.5"><strong>Petunjuk Belajar:</strong> ${lvlData.hint}</p>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+
+                this.showScreen('resultsScreen');
+            }
+
+            /* ==========================================================================
+               4. SPECIFIC LEVEL LOGIC & BUILDERS
+               ========================================================================== */
+            loadLevelStage(levelId) {
+                const stage = document.getElementById('levelStageArea');
+                const actionBtnContainer = document.getElementById('levelActionButtonContainer');
+                const hudHeader = document.getElementById('levelHudHeader');
+                const instBanner = document.getElementById('levelInstructionBanner');
+                
+                stage.innerHTML = '';
+                actionBtnContainer.innerHTML = '';
+
+                // Reset theme classes
+                stage.className = `cyber-panel p-4 sm:p-6 min-h-[440px] flex flex-col justify-center transition-all duration-500 level-env-${levelId}`;
+
+                // Show Indicator in Top Banner Instruction
+                const lvlData = GAME_LEVELS.find(l => l.id === levelId);
+                const subtitles = [
+                    'SEKTOR 1: REAKTOR INTI ATOM',
+                    'SEKTOR 2: DEKODER KODE UNTAIAN NUKLIDA',
+                    'SEKTOR 3: LABORATORIUM IDENTITAS ATOM',
+                    'SEKTOR 4: ORBITAL GALAXY ELEKTRON',
+                    'SEKTOR 5: MUSEUM SEJARAH ATOM',
+                    'SEKTOR 6: CHAMBER REAKSI ION',
+                    'SEKTOR 7: MARKAS UTAMA DR. NEUTRON'
+                ];
+
+                document.getElementById('levelSubtitle').innerText = subtitles[levelId - 1];
+                document.getElementById('levelInstructionText').innerHTML = `
+                    <span class="text-yellow-400 font-bold block mb-0.5">CAPAIAN PEMBELAJARAN: ${lvlData.indicator}</span>
+                    <span>Selesaikan aktivitas interaktif di bawah ini secara cermat!</span>
+                `;
+
+                switch(levelId) {
+                    case 1: this.buildLevel1(stage, actionBtnContainer); break;
+                    case 2: this.buildLevel2(stage, actionBtnContainer); break;
+                    case 3: this.buildLevel3(stage, actionBtnContainer); break;
+                    case 4: this.buildLevel4(stage, actionBtnContainer); break;
+                    case 5: this.buildLevel5(stage, actionBtnContainer); break;
+                    case 6: this.buildLevel6(stage, actionBtnContainer); break;
+                    case 7: this.buildLevel7(stage, actionBtnContainer); break;
+                }
+            }
+
+            /* ---------- LEVEL 1: THE ATOMIC CORE ---------- */
+            buildLevel1(stage, actionBtnContainer) {
+                document.getElementById('levelInstructionText').innerText = 
+                    "Susun atom Helium (⁴₂He)! Tempatkan 2 Proton (+) & 2 Neutron (0) ke Inti Atom, serta 2 Elektron (-) ke Kulit Atom. Kemudian tentukan muatannya!";
+
+                this.levelState[1] = { coreProtons: 0, coreNeutrons: 0, shellElectrons: 0, chargeProton: '', chargeElectron: '', chargeNeutron: '' };
+
+                stage.innerHTML = `
+                    <!-- Level 1 Unique Header Banner -->
+                    <div class="mb-4 pb-2 border-b border-cyan-500/30 flex justify-between items-center">
+                        <span class="font-orbitron text-xs font-bold text-cyan-300 flex items-center gap-2">
+                            <i class="fa-solid fa-microscope text-cyan-400"></i> MODUL PERAKITAN INTI & KULIT ATOM
+                        </span>
+                        <span class="text-xs text-slate-400">SEKTOR 1</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        <!-- Atom Canvas & Drop Target -->
+                        <div class="flex flex-col items-center">
+                            <div id="atomCoreDropzone" class="w-64 h-64 rounded-full border-2 border-dashed border-cyan-400 relative flex items-center justify-center p-4 bg-slate-950/60 drop-target">
+                                <span class="absolute top-2 text-xs font-orbitron text-cyan-400">KULIT ATOM (Elektron: <span id="cntE">0</span>/2)</span>
+                                
+                                <!-- Core Dropzone -->
+                                <div class="w-32 h-32 rounded-full border-2 border-dashed border-purple-400 bg-purple-950/40 flex flex-col items-center justify-center p-2 text-center">
+                                    <span class="text-xs font-orbitron text-purple-300 font-bold mb-1">INTI ATOM</span>
+                                    <span class="text-xs text-slate-300">p⁺: <span id="cntP">0</span>/2 | n⁰: <span id="cntN">0</span>/2</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Particles Palette & Quiz -->
+                        <div class="space-y-4">
+                            <h4 class="font-orbitron text-sm font-bold text-cyan-300">1. TAMBAHKAN PARTIKEL (KLIK/SERET):</h4>
+                            <div class="flex gap-3">
+                                <button onclick="game.addParticleL1('p')" class="flex-1 py-2 px-3 rounded-lg bg-red-950/80 border border-red-500 text-red-300 font-orbitron text-xs font-bold hover:bg-red-900">
+                                    + PROTON (p⁺)
+                                </button>
+                                <button onclick="game.addParticleL1('n')" class="flex-1 py-2 px-3 rounded-lg bg-slate-800 border border-slate-500 text-slate-300 font-orbitron text-xs font-bold hover:bg-slate-700">
+                                    + NEUTRON (n⁰)
+                                </button>
+                                <button onclick="game.addParticleL1('e')" class="flex-1 py-2 px-3 rounded-lg bg-cyan-950/80 border border-cyan-500 text-cyan-300 font-orbitron text-xs font-bold hover:bg-cyan-900">
+                                    + ELEKTRON (e⁻)
+                                </button>
+                            </div>
+
+                            <h4 class="font-orbitron text-sm font-bold text-cyan-300 pt-2">2. SOAL MUATAN PARTIKEL:</h4>
+                            <div class="space-y-2 text-xs">
+                                <div>
+                                    <label class="block text-slate-300 mb-1">Muatan Proton:</label>
+                                    <select id="selP" onchange="game.levelState[1].chargeProton = this.value" class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-slate-200">
+                                        <option value="">-- Pilih Muatan --</option>
+                                        <option value="positif">Positif (+1)</option>
+                                        <option value="negatif">Negatif (-1)</option>
+                                        <option value="netral">Netral (0)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-slate-300 mb-1">Muatan Neutron:</label>
+                                    <select id="selN" onchange="game.levelState[1].chargeNeutron = this.value" class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-slate-200">
+                                        <option value="">-- Pilih Muatan --</option>
+                                        <option value="positif">Positif (+1)</option>
+                                        <option value="negatif">Negatif (-1)</option>
+                                        <option value="netral">Netral (0)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-slate-300 mb-1">Muatan Elektron:</label>
+                                    <select id="selE" onchange="game.levelState[1].chargeElectron = this.value" class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-slate-200">
+                                        <option value="">-- Pilih Muatan --</option>
+                                        <option value="positif">Positif (+1)</option>
+                                        <option value="negatif">Negatif (-1)</option>
+                                        <option value="netral">Netral (0)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                actionBtnContainer.innerHTML = `
+                    <button onclick="game.verifyLevel1()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-orbitron font-extrabold text-sm glow-blue cyber-btn">
+                        PERIKSA SUSUNAN <i class="fa-solid fa-check ml-1"></i>
+                    </button>
+                `;
+            }
+
+            addParticleL1(type) {
+                soundManager.playClick();
+                const s = this.levelState[1];
+                if (!s) return;
+
+                if (type === 'p') {
+                    if (s.coreProtons < 2) s.coreProtons++;
+                    else s.coreProtons = 0;
+                } else if (type === 'n') {
+                    if (s.coreNeutrons < 2) s.coreNeutrons++;
+                    else s.coreNeutrons = 0;
+                } else if (type === 'e') {
+                    if (s.shellElectrons < 2) s.shellElectrons++;
+                    else s.shellElectrons = 0;
+                }
+
+                const elemP = document.getElementById('cntP');
+                const elemN = document.getElementById('cntN');
+                const elemE = document.getElementById('cntE');
+
+                if (elemP) elemP.innerText = s.coreProtons;
+                if (elemN) elemN.innerText = s.coreNeutrons;
+                if (elemE) elemE.innerText = s.shellElectrons;
+            }
+
+            verifyLevel1() {
+                const s = this.levelState[1];
+                if (!s) return;
+
+                const isParticleCorrect = (s.coreProtons === 2 && s.coreNeutrons === 2 && s.shellElectrons === 2);
+                const isChargeCorrect = (s.chargeProton === 'positif' && s.chargeNeutron === 'netral' && s.chargeElectron === 'negatif');
+
+                if (isParticleCorrect && isChargeCorrect) {
+                    this.showFeedback(true, "PERAKITAN ATOM HELIUM BERHASIL!", "Inti atom Helium terdiri dari 2 proton dan 2 neutron, serta dikelilingi 2 elektron di kulit atom. Proton bermuatan positif (+), neutron netral (0), dan elektron negatif (-).", () => {
+                        this.completeCurrentLevel();
+                    });
+                } else {
+                    let text = "Susunan partikel atau penentuan muatan belum tepat!";
+                    if (!isParticleCorrect) text += " Pastikan 2 Proton, 2 Neutron, dan 2 Elektron.";
+                    if (!isChargeCorrect) text += " Periksa kembali muatan masing-masing partikel.";
+                    this.showFeedback(false, "PERAKITAN GAGAL!", text, null);
+                }
+            }
+
+            /* ---------- LEVEL 2: ATOMIC CODE BREAKER ---------- */
+            buildLevel2(stage, actionBtnContainer) {
+                this.levelState[2] = {
+                    currentQ: 0,
+                    questions: [
+                        { symbol: 'Ca', name: 'Kalsium', mass: 40, atomic: 20, p: 20, n: 20, e: 20 },
+                        { symbol: 'C', name: 'Karbon', mass: 12, atomic: 6, p: 6, n: 6, e: 6 },
+                        { symbol: 'Cl', name: 'Klorin', mass: 35, atomic: 17, p: 17, n: 18, e: 17 },
+                        { symbol: 'Na', name: 'Natrium', mass: 23, atomic: 11, p: 11, n: 12, e: 11 },
+                        { symbol: 'K', name: 'Kalium', mass: 39, atomic: 19, p: 19, n: 20, e: 19 }
+                    ]
+                };
+                this.renderLevel2Question(stage, actionBtnContainer);
+            }
+
+            renderLevel2Question(stage, actionBtnContainer) {
+                const s = this.levelState[2];
+                const q = s.questions[s.currentQ];
+
+                stage.innerHTML = `
+                    <!-- Level 2 Unique Header Banner -->
+                    <div class="mb-4 pb-2 border-b border-purple-500/30 flex justify-between items-center">
+                        <span class="font-orbitron text-xs font-bold text-purple-300 flex items-center gap-2">
+                            <i class="fa-solid fa-terminal text-purple-400"></i> DEKODER NOTASI ATOM NETRAL
+                        </span>
+                        <span class="text-xs text-slate-400">SEKTOR 2</span>
+                    </div>
+
+                    <div class="flex flex-col items-center space-y-6">
+                        <div class="flex justify-between w-full max-w-xl items-center">
+                            <span class="font-orbitron text-xs font-bold text-cyan-400">SOAL ${s.currentQ + 1} DARI 5</span>
+                            <span class="font-orbitron text-xs font-bold text-purple-300">PROGRESS: ${s.currentQ + 1} / 5</span>
+                        </div>
+
+                        <!-- Nuclear Symbol Display -->
+                        <div class="bg-slate-950 border-2 border-purple-500/80 rounded-2xl p-6 px-12 text-center glow-purple">
+                            <div class="flex items-baseline justify-center">
+                                <div class="flex flex-col text-right font-orbitron text-purple-300 font-bold mr-2 text-lg">
+                                    <span>${q.mass}</span>
+                                    <span>${q.atomic}</span>
+                                </div>
+                                <span class="font-orbitron font-black text-6xl text-purple-400">${q.symbol}</span>
+                            </div>
+                            <span class="text-xs font-orbitron text-slate-400 mt-2 block">${q.name}</span>
+                        </div>
+
+                        <!-- Decoder Inputs -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-xl">
+                            <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 text-center">
+                                <label class="text-xs font-orbitron text-cyan-300 font-bold block mb-2">PROTON (Z)</label>
+                                <input type="number" id="l2P" class="w-full bg-slate-950 border border-slate-700 rounded-lg py-2 text-center font-orbitron font-bold text-lg text-slate-100">
+                            </div>
+                            <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 text-center">
+                                <label class="text-xs font-orbitron text-purple-300 font-bold block mb-2">NEUTRON (A - Z)</label>
+                                <input type="number" id="l2N" class="w-full bg-slate-950 border border-slate-700 rounded-lg py-2 text-center font-orbitron font-bold text-lg text-slate-100">
+                            </div>
+                            <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 text-center">
+                                <label class="text-xs font-orbitron text-yellow-300 font-bold block mb-2">ELEKTRON</label>
+                                <input type="number" id="l2E" class="w-full bg-slate-950 border border-slate-700 rounded-lg py-2 text-center font-orbitron font-bold text-lg text-slate-100">
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                actionBtnContainer.innerHTML = `
+                    <button onclick="game.verifyLevel2()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-orbitron font-extrabold text-sm glow-purple cyber-btn">
+                        DECODE KODE ATOM (${s.currentQ + 1}/5) <i class="fa-solid fa-key ml-1"></i>
+                    </button>
+                `;
+            }
+
+            verifyLevel2() {
+                const s = this.levelState[2];
+                const q = s.questions[s.currentQ];
+                const inputP = parseInt(document.getElementById('l2P').value);
+                const inputN = parseInt(document.getElementById('l2N').value);
+                const inputE = parseInt(document.getElementById('l2E').value);
+
+                if (inputP === q.p && inputN === q.n && inputE === q.e) {
+                    this.showFeedback(true, "DEKODE UNSUR BERHASIL!", `Pada atom netral ${q.symbol}: Proton = Z (${q.p}), Elektron = Proton (${q.e}), dan Neutron = A - Z (${q.mass} - ${q.atomic} = ${q.n}).`, () => {
+                        s.currentQ++;
+                        if (s.currentQ >= s.questions.length) {
+                            this.completeCurrentLevel();
+                        } else {
+                            this.renderLevel2Question(document.getElementById('levelStageArea'), document.getElementById('levelActionButtonContainer'));
+                        }
+                    });
+                } else {
+                    this.showFeedback(false, "DEKODE GAGAL!", `Kombinasi angka belum pas. Ingat: Proton = Z, Elektron = Z (netral), Neutron = A - Z.`, null);
+                }
+            }
+
+            /* ---------- LEVEL 3: ATOMIC IDENTITY ---------- */
+            buildLevel3(stage, actionBtnContainer) {
+                this.levelState[3] = {
+                    currentQ: 0,
+                    questions: [
+                        { pair: '¹²₆C dan ¹³₆C', ans: 'isotop', exp: 'Memiliki jumlah proton/nomor atom sama (6), namun nomor massa beda.' },
+                        { pair: '⁴⁰₁₉K dan ⁴⁰₂₀Ca', ans: 'isobar', exp: 'Memiliki nomor massa sama (40), tetapi nomor atom beda.' },
+                        { pair: '³¹₁₅P dan ³²₁₆S', ans: 'isoton', exp: 'Memiliki jumlah neutron sama (31-15 = 16 dan 32-16 = 16).' },
+                        { pair: '¹⁴₆C dan ¹⁴₇N', ans: 'isobar', exp: 'Memiliki nomor massa sama (14).' },
+                        { pair: '²³₁₁Na dan ²⁴₁₂Mg', ans: 'isoton', exp: 'Memiliki jumlah neutron sama (23-11 = 12 dan 24-12 = 12).' }
+                    ]
+                };
+                this.renderLevel3Question(stage, actionBtnContainer);
+            }
+
+            renderLevel3Question(stage, actionBtnContainer) {
+                const s = this.levelState[3];
+                const q = s.questions[s.currentQ];
+
+                stage.innerHTML = `
+                    <!-- Level 3 Unique Header Banner -->
+                    <div class="mb-4 pb-2 border-b border-purple-400/30 flex justify-between items-center">
+                        <span class="font-orbitron text-xs font-bold text-purple-300 flex items-center gap-2">
+                            <i class="fa-solid fa-fingerprint text-purple-400"></i> KLASIFIKASI HUBUNGAN ATOM
+                        </span>
+                        <span class="text-xs text-slate-400">SEKTOR 3</span>
+                    </div>
+
+                    <div class="flex flex-col items-center space-y-6">
+                        <div class="flex justify-between w-full max-w-md items-center">
+                            <span class="font-orbitron text-xs font-bold text-cyan-400">SOAL ${s.currentQ + 1} DARI 5</span>
+                            <span class="font-orbitron text-xs font-bold text-purple-300">PROGRESS: ${s.currentQ + 1} / 5</span>
+                        </div>
+
+                        <div class="bg-slate-950 border border-purple-500/50 rounded-2xl p-6 text-center glow-purple w-full max-w-md">
+                            <span class="font-orbitron font-black text-3xl sm:text-4xl text-purple-300">${q.pair}</span>
+                        </div>
+
+                        <div class="space-y-3 w-full max-w-md">
+                            <label class="text-xs font-orbitron text-cyan-300 block mb-1 text-center">PILIH HUBUNGAN KEDUA ATOM:</label>
+                            <select id="l3Sel" class="w-full bg-slate-950 border border-purple-500/50 rounded-lg p-3 text-sm text-slate-200 font-orbitron">
+                                <option value="">-- Pilih Hubungan --</option>
+                                <option value="isotop">ISOTOP (Proton Sama)</option>
+                                <option value="isobar">ISOBAR (Nomor Massa Sama)</option>
+                                <option value="isoton">ISOTON (Jumlah Neutron Sama)</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+
+                actionBtnContainer.innerHTML = `
+                    <button onclick="game.verifyLevel3()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-orbitron font-extrabold text-sm glow-purple cyber-btn">
+                        VERIFIKASI PASANGAN (${s.currentQ + 1}/5) <i class="fa-solid fa-check ml-1"></i>
+                    </button>
+                `;
+            }
+
+            verifyLevel3() {
+                const s = this.levelState[3];
+                const q = s.questions[s.currentQ];
+                const val = document.getElementById('l3Sel').value;
+
+                if (val === q.ans) {
+                    this.showFeedback(true, "KLASIFIKASI BENAR!", q.exp, () => {
+                        s.currentQ++;
+                        if (s.currentQ >= s.questions.length) {
+                            this.completeCurrentLevel();
+                        } else {
+                            this.renderLevel3Question(document.getElementById('levelStageArea'), document.getElementById('levelActionButtonContainer'));
+                        }
+                    });
+                } else {
+                    this.showFeedback(false, "KLASIFIKASI SALAH!", "Perhatikan baik-baik muatan nomor atom (bawah) dan nomor massa (atas).", null);
+                }
+            }
+
+            /* ---------- LEVEL 4: ELECTRON GALAXY ---------- */
+            buildLevel4(stage, actionBtnContainer) {
+                this.levelState[4] = {
+                    currentQ: 0,
+                    K: 0, L: 0, M: 0,
+                    questions: [
+                        { symbol: 'Na', name: 'Natrium', total: 11, target: [2, 8, 1] },
+                        { symbol: 'C', name: 'Karbon', total: 6, target: [2, 4, 0] },
+                        { symbol: 'Mg', name: 'Magnesium', total: 12, target: [2, 8, 2] },
+                        { symbol: 'Ar', name: 'Argon', total: 18, target: [2, 8, 8] },
+                        { symbol: 'F', name: 'Fluorin', total: 9, target: [2, 7, 0] }
+                    ]
+                };
+                this.renderLevel4Question(stage, actionBtnContainer);
+            }
+
+            adjL4(shell, delta) {
+                soundManager.playClick();
+                const s = this.levelState[4];
+                if (shell === 'K') s.K = Math.max(0, Math.min(2, s.K + delta));
+                if (shell === 'L') s.L = Math.max(0, Math.min(8, s.L + delta));
+                if (shell === 'M') s.M = Math.max(0, Math.min(18, s.M + delta));
+
+                const valK = document.getElementById('valK');
+                const valL = document.getElementById('valL');
+                const valM = document.getElementById('valM');
+                const cfgPreview = document.getElementById('cfgPreview');
+
+                if (valK) valK.innerText = s.K;
+                if (valL) valL.innerText = s.L;
+                if (valM) valM.innerText = s.M;
+                if (cfgPreview) cfgPreview.innerText = `${s.K}, ${s.L}, ${s.M}`;
+            }
+
+            verifyLevel4() {
+                const s = this.levelState[4];
+                const q = s.questions[s.currentQ];
+
+                if (s.K === q.target[0] && s.L === q.target[1] && s.M === q.target[2]) {
+                    this.showFeedback(true, "KONFIGURASI BOHR TEPAT!", `Pengisian elektron untuk ${q.name} (${q.total}e⁻) mengikuti aturan kapasitas kulit K(2), L(8), M(18) ➔ ${q.target.join(', ')}.`, () => {
+                        s.currentQ++;
+                        if (s.currentQ >= s.questions.length) {
+                            this.completeCurrentLevel();
+                        } else {
+                            this.renderLevel4Question(document.getElementById('levelStageArea'), document.getElementById('levelActionButtonContainer'));
+                        }
+                    });
+                } else {
+                    this.showFeedback(false, "KONFIGURASI SALAH!", `Total elektron harus sama dengan ${q.total} dan mengisi kulit paling dalam terlebih dahulu!`, null);
+                }
+            }
+
+            /* ---------- LEVEL 5: EVOLUTION OF ATOM ---------- */
+            buildLevel5(stage, actionBtnContainer) {
+                this.levelState[5] = {
+                    currentQ: 0,
+                    questions: [
+                        {
+                            q: "Siapakah ilmuwan yang mengemukakan teori bahwa atom adalah bagian terkecil berupa bola pejal yang tidak dapat dibagi lagi?",
+                            opts: ["John Dalton", "J.J. Thomson", "Ernest Rutherford", "Niels Bohr"],
+                            ans: 0,
+                            exp: "John Dalton mengemukakan model atom pertama sebagai bola pejal yang tidak dapat dibelah."
+                        },
+                        {
+                            q: "Model atom yang menggambarkan elektron tersebar di dalam muatan positif seperti 'Roti Kismis' dikemukakan oleh...",
+                            opts: ["Ernest Rutherford", "J.J. Thomson", "Niels Bohr", "James Chadwick"],
+                            ans: 1,
+                            exp: "J.J. Thomson mengemukakan model Roti Kismis setelah menemukan partikel bermuatan negatif (elektron)."
+                        },
+                        {
+                            q: "Percobaan penembakan lempeng emas tipis dengan sinar alfa yang menemukan keberadaan Inti Atom dilakukan oleh...",
+                            opts: ["John Dalton", "Niels Bohr", "Ernest Rutherford", "J.J. Thomson"],
+                            ans: 2,
+                            exp: "Rutherford menemukan bahwa sebagian besar massa atom dan muatan positif terpusat pada inti atom."
+                        },
+                        {
+                            q: "Ilmuwan yang menyatakan bahwa elektron mengelilingi inti atom pada lintasan stasioner (kulit atom) tertentu adalah...",
+                            opts: ["Niels Bohr", "John Dalton", "J.J. Thomson", "Ernest Rutherford"],
+                            ans: 0,
+                            exp: "Niels Bohr menyempurnakan model Rutherford dengan gagasan tingkat energi/kulit atom."
+                        },
+                        {
+                            q: "Partikel neutron yang tidak bermuatan di dalam inti atom ditemukan pada tahun 1932 oleh...",
+                            opts: ["James Chadwick", "Niels Bohr", "J.J. Thomson", "John Dalton"],
+                            ans: 0,
+                            exp: "James Chadwick menemukan partikel netral bernama neutron di dalam inti atom."
+                        }
+                    ]
+                };
+                this.renderLevel5Question(stage, actionBtnContainer);
+            }
+
+            answerL5Q(idx) {
+                const s = this.levelState[5];
+                const q = s.questions[s.currentQ];
+
+                if (idx === q.ans) {
+                    this.showFeedback(true, "JAWABAN BENAR!", q.exp, () => {
+                        s.currentQ++;
+                        if (s.currentQ >= s.questions.length) {
+                            this.completeCurrentLevel();
+                        } else {
+                            this.renderLevel5Question(document.getElementById('levelStageArea'), document.getElementById('levelActionButtonContainer'));
+                        }
+                    });
+                } else {
+                    this.showFeedback(false, "JAWABAN SALAH!", "Coba ingat kembali peristiwa sejarah penemuan model atom!", null);
+                }
+            }
+
+            /* ---------- LEVEL 6: ION TRANSFORMATION ---------- */
+            buildLevel6(stage, actionBtnContainer) {
+                this.levelState[6] = {
+                    currentQ: 0,
+                    questions: [
+                        { title: 'SOAL 1: ANION OKSIGEN', symbol: 'O²⁻', name: 'Anion Oksigen (Z = 8)', desc: 'Atom Oksigen netral memiliki 8 proton dan 8 elektron. Pembentukan ion O²⁻ berarti atom tersebut MENERIMA 2 elektron.', label: 'Berapakah jumlah elektron pada ion O²⁻?', ans: 10, exp: 'Jumlah elektron ion O²⁻ = 8 + 2 = 10 elektron.' },
+                        { title: 'SOAL 2: KATION NATRIUM', symbol: 'Na⁺', name: 'Kation Natrium (Z = 11)', desc: 'Atom Natrium netral memiliki 11 elektron. Pembentukan ion Na⁺ berarti atom MELEPAS 1 elektron.', label: 'Berapakah jumlah elektron pada ion Na⁺?', ans: 10, exp: 'Jumlah elektron ion Na⁺ = 11 - 1 = 10 elektron.' },
+                        { title: 'SOAL 3: KATION ALUMUNIUM', symbol: 'Al³⁺', name: 'Kation Alumunium (Z = 13)', desc: 'Atom Alumunium netral memiliki 13 elektron. Ion Al³⁺ melepaskan 3 elektronnya.', label: 'Berapakah jumlah elektron pada ion Al³⁺?', ans: 10, exp: 'Jumlah elektron ion Al³⁺ = 13 - 3 = 10 elektron.' },
+                        { title: 'SOAL 4: ANION KLORIDA', symbol: 'Cl⁻', name: 'Anion Klorida (Z = 17)', desc: 'Atom Klorin netral memiliki 17 elektron. Ion Cl⁻ menerima 1 elektron tambahan.', label: 'Berapakah jumlah elektron pada ion Cl⁻?', ans: 18, exp: 'Jumlah elektron ion Cl⁻ = 17 + 1 = 18 elektron.' },
+                        { title: 'SOAL 5: KATION KALSIUM', symbol: 'Ca²⁺', name: 'Kation Kalsium (Z = 20)', desc: 'Atom Kalsium netral memiliki 20 elektron. Ion Ca²⁺ melepas 2 elektron dari kulit terluar.', label: 'Berapakah jumlah elektron pada ion Ca²⁺?', ans: 18, exp: 'Jumlah elektron ion Ca²⁺ = 20 - 2 = 18 elektron.' }
+                    ]
+                };
+                this.renderLevel6Question(stage, actionBtnContainer);
+            }
+
+            verifyLevel6() {
+                const s = this.levelState[6];
+                const q = s.questions[s.currentQ];
+                const val = parseInt(document.getElementById('l6Ans').value);
+
+                if (val === q.ans) {
+                    this.showFeedback(true, "PERHITUNGAN ION TEPAT!", q.exp, () => {
+                        s.currentQ++;
+                        if (s.currentQ >= s.questions.length) {
+                            this.completeCurrentLevel();
+                        } else {
+                            this.renderLevel6Question(document.getElementById('levelStageArea'), document.getElementById('levelActionButtonContainer'));
+                        }
+                    });
+                } else {
+                    this.showFeedback(false, "PERHITUNGAN SALAH!", "Kation (+): kurangi elektron. Anion (-): tambahkan elektron.", null);
+                }
+            }
+
+            /* ---------- LEVEL 7: FINAL BOSS DR. NEUTRON ---------- */
+            buildLevel7(stage, actionBtnContainer) {
+                this.levelState[7] = {
+                    currentQ: 0,
+                    bossHP: 100
+                };
+                this.renderBossStage(stage, actionBtnContainer);
+            }
+
+            /* ---------- LEVEL 3: ATOMIC IDENTITY ---------- */
+            renderLevel3Question(stage, actionBtnContainer) {
+                const s = this.levelState[3];
+                const q = s.questions[s.currentQ];
+
+                stage.innerHTML = `
+                    <!-- Level 3 Unique Header Banner -->
+                    <div class="mb-4 pb-2 border-b border-purple-400/30 flex justify-between items-center">
+                        <span class="font-orbitron text-xs font-bold text-purple-300 flex items-center gap-2">
+                            <i class="fa-solid fa-fingerprint text-purple-400"></i> KLASIFIKASI HUBUNGAN ATOM
+                        </span>
+                        <span class="text-xs text-slate-400">SEKTOR 3</span>
+                    </div>
+
+                    <div class="flex flex-col items-center space-y-6">
+                        <div class="flex justify-between w-full max-w-md items-center">
+                            <span class="font-orbitron text-xs font-bold text-cyan-400">SOAL ${s.currentQ + 1} DARI 5</span>
+                            <span class="font-orbitron text-xs font-bold text-purple-300">PROGRESS: ${s.currentQ + 1} / 5</span>
+                        </div>
+
+                        <div class="bg-slate-950 border border-purple-500/50 rounded-2xl p-6 text-center glow-purple w-full max-w-md">
+                            <span class="font-orbitron font-black text-3xl sm:text-4xl text-purple-300">${q.pair}</span>
+                        </div>
+
+                        <div class="space-y-3 w-full max-w-md">
+                            <label class="text-xs font-orbitron text-cyan-300 block mb-1 text-center">PILIH HUBUNGAN KEDUA ATOM:</label>
+                            <select id="l3Sel" class="w-full bg-slate-950 border border-purple-500/50 rounded-lg p-3 text-sm text-slate-200 font-orbitron">
+                                <option value="">-- Pilih Hubungan --</option>
+                                <option value="isotop">ISOTOP (Proton Sama)</option>
+                                <option value="isobar">ISOBAR (Nomor Massa Sama)</option>
+                                <option value="isoton">ISOTON (Jumlah Neutron Sama)</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+
+                actionBtnContainer.innerHTML = `
+                    <button onclick="game.verifyLevel3()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-orbitron font-extrabold text-sm glow-purple cyber-btn">
+                        VERIFIKASI PASANGAN (${s.currentQ + 1}/5) <i class="fa-solid fa-check ml-1"></i>
+                    </button>
+                `;
+            }
+
+            /* ---------- LEVEL 4: ELECTRON GALAXY ---------- */
+            renderLevel4Question(stage, actionBtnContainer) {
+                const s = this.levelState[4];
+                const q = s.questions[s.currentQ];
+                s.K = 0; s.L = 0; s.M = 0;
+
+                stage.innerHTML = `
+                    <!-- Level 4 Unique Header Banner -->
+                    <div class="mb-4 pb-2 border-b border-sky-400/30 flex justify-between items-center">
+                        <span class="font-orbitron text-xs font-bold text-sky-300 flex items-center gap-2">
+                            <i class="fa-solid fa-orbit text-sky-400"></i> PENGATURAN ORBITAL BOHR
+                        </span>
+                        <span class="text-xs text-slate-400">SEKTOR 4</span>
+                    </div>
+
+                    <div class="flex flex-col items-center space-y-4">
+                        <div class="flex justify-between w-full max-w-xl items-center">
+                            <span class="font-orbitron text-xs font-bold text-cyan-400">SOAL ${s.currentQ + 1} DARI 5</span>
+                            <span class="font-orbitron text-xs font-bold text-purple-300">PROGRESS: ${s.currentQ + 1} / 5</span>
+                        </div>
+
+                        <div class="font-orbitron text-xl text-sky-300 font-bold">Unsur ${q.name} (${q.symbol}) - Total ${q.total} Elektron</div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-xl">
+                            <div class="bg-slate-900/90 p-4 rounded-xl border border-cyan-500/40 text-center">
+                                <span class="font-orbitron text-xs text-cyan-400 font-bold block mb-1">KULIT K (Max 2)</span>
+                                <div class="flex items-center justify-center gap-3">
+                                    <button onclick="game.adjL4('K', -1)" class="w-8 h-8 rounded bg-slate-800 text-cyan-400 font-bold">-</button>
+                                    <span id="valK" class="font-orbitron text-xl font-bold text-slate-100">0</span>
+                                    <button onclick="game.adjL4('K', 1)" class="w-8 h-8 rounded bg-slate-800 text-cyan-400 font-bold">+</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-900/90 p-4 rounded-xl border border-purple-500/40 text-center">
+                                <span class="font-orbitron text-xs text-purple-400 font-bold block mb-1">KULIT L (Max 8)</span>
+                                <div class="flex items-center justify-center gap-3">
+                                    <button onclick="game.adjL4('L', -1)" class="w-8 h-8 rounded bg-slate-800 text-purple-400 font-bold">-</button>
+                                    <span id="valL" class="font-orbitron text-xl font-bold text-slate-100">0</span>
+                                    <button onclick="game.adjL4('L', 1)" class="w-8 h-8 rounded bg-slate-800 text-purple-400 font-bold">+</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-900/90 p-4 rounded-xl border border-yellow-500/40 text-center">
+                                <span class="font-orbitron text-xs text-yellow-400 font-bold block mb-1">KULIT M (Max 18)</span>
+                                <div class="flex items-center justify-center gap-3">
+                                    <button onclick="game.adjL4('M', -1)" class="w-8 h-8 rounded bg-slate-800 text-yellow-400 font-bold">-</button>
+                                    <span id="valM" class="font-orbitron text-xl font-bold text-slate-100">0</span>
+                                    <button onclick="game.adjL4('M', 1)" class="w-8 h-8 rounded bg-slate-800 text-yellow-400 font-bold">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Configuration Preview -->
+                        <div class="text-xs font-orbitron text-slate-400 pt-2">
+                            Konfigurasi Elektron Saat Ini: <span id="cfgPreview" class="text-cyan-300 font-bold">0, 0, 0</span>
+                        </div>
+                    </div>
+                `;
+
+                actionBtnContainer.innerHTML = `
+                    <button onclick="game.verifyLevel4()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-slate-950 font-orbitron font-extrabold text-sm glow-blue cyber-btn">
+                        PERIKSA KONFIGURASI (${s.currentQ + 1}/5) <i class="fa-solid fa-atom ml-1"></i>
+                    </button>
+                `;
+            }
+
+            /* ---------- LEVEL 5: EVOLUTION OF ATOM ---------- */
+            renderLevel5Question(stage, actionBtnContainer) {
+                const s = this.levelState[5];
+                const q = s.questions[s.currentQ];
+
+                stage.innerHTML = `
+                    <!-- Level 5 Unique Header Banner -->
+                    <div class="mb-4 pb-2 border-b border-green-500/30 flex justify-between items-center">
+                        <span class="font-orbitron text-xs font-bold text-green-400 flex items-center gap-2">
+                            <i class="fa-solid fa-timeline text-green-400"></i> MUSEUM SEJARAH TEORI ATOM
+                        </span>
+                        <span class="text-xs text-slate-400">SEKTOR 5</span>
+                    </div>
+
+                    <div class="flex flex-col items-center space-y-6">
+                        <div class="flex justify-between w-full max-w-lg items-center">
+                            <span class="font-orbitron text-xs font-bold text-green-400">SOAL ${s.currentQ + 1} DARI 5</span>
+                            <span class="font-orbitron text-xs font-bold text-purple-300">PROGRESS: ${s.currentQ + 1} / 5</span>
+                        </div>
+
+                        <div class="bg-slate-950 border border-green-500/40 p-5 rounded-xl w-full max-w-lg">
+                            <h4 class="font-orbitron font-bold text-green-300 text-sm mb-4 leading-relaxed">${q.q}</h4>
+                            <div class="space-y-2">
+                                ${q.opts.map((opt, idx) => `
+                                    <button onclick="game.answerL5Q(${idx})" class="w-full text-left p-3 rounded-lg bg-slate-900/90 hover:bg-green-950 border border-slate-800 hover:border-green-400 text-slate-200 text-xs font-orbitron transition flex items-center justify-between">
+                                        <span>${opt}</span>
+                                        <i class="fa-solid fa-chevron-right text-green-500"></i>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                actionBtnContainer.innerHTML = '';
+            }
+
+            /* ---------- LEVEL 6: ION TRANSFORMATION ---------- */
+            renderLevel6Question(stage, actionBtnContainer) {
+                const s = this.levelState[6];
+                const q = s.questions[s.currentQ];
+
+                stage.innerHTML = `
+                    <!-- Level 6 Unique Header Banner -->
+                    <div class="mb-4 pb-2 border-b border-pink-500/30 flex justify-between items-center">
+                        <span class="font-orbitron text-xs font-bold text-pink-300 flex items-center gap-2">
+                            <i class="fa-solid fa-flask-vial text-pink-400"></i> REAKTOR ANION & KATION
+                        </span>
+                        <span class="text-xs text-slate-400">SEKTOR 6</span>
+                    </div>
+
+                    <div class="flex flex-col items-center space-y-6">
+                        <div class="flex justify-between w-full max-w-md items-center">
+                            <span class="font-orbitron text-xs font-bold text-pink-400">${q.title}</span>
+                            <span class="font-orbitron text-xs font-bold text-purple-300">PROGRESS: ${s.currentQ + 1} / 5</span>
+                        </div>
+
+                        <div class="bg-slate-950 border border-pink-500/50 rounded-2xl p-6 text-center glow-purple w-full max-w-md">
+                            <span class="font-orbitron font-black text-5xl text-pink-400">${q.symbol}</span>
+                            <span class="text-xs font-orbitron text-slate-400 block mt-2">${q.name}</span>
+                        </div>
+
+                        <div class="space-y-3 w-full max-w-md">
+                            <p class="text-xs text-slate-300 text-center font-medium">${q.desc}</p>
+                            <div>
+                                <label class="text-xs font-orbitron text-pink-300 block mb-1.5 text-center">${q.label}</label>
+                                <input type="number" id="l6Ans" placeholder="Masukkan angka..." class="w-full bg-slate-950 border border-pink-500 rounded-lg p-2.5 text-center font-orbitron font-bold text-pink-300 text-xl focus:outline-none focus:border-pink-400">
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                actionBtnContainer.innerHTML = `
+                    <button onclick="game.verifyLevel6()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-orbitron font-extrabold text-sm glow-purple cyber-btn">
+                        JAWAB SOAL (${s.currentQ + 1}/5) <i class="fa-solid fa-bolt ml-1"></i>
+                    </button>
+                `;
+            }
+
+            /* ---------- LEVEL 7: FINAL BOSS DR. NEUTRON ---------- */
+            renderBossStage(stage, actionBtnContainer) {
+                const questions = [
+                    {
+                        q: "Soal 1 dari 10: Manakah yang merupakan pasangan ISOTOP?",
+                        opts: ["¹²₆C dan ¹³₆C", "¹⁴₆C dan ¹⁴₇N", "³¹₁₅P dan ³²₁₆S"],
+                        ans: 0,
+                        exp: "Isotop adalah unsur dengan nomor atom/proton yang sama (¹²₆C dan ¹³₆C)."
+                    },
+                    {
+                        q: "Soal 2 dari 10: Berapakah jumlah neutron pada atom netral ³⁵₁₇Cl?",
+                        opts: ["17 Neutron", "18 Neutron", "35 Neutron"],
+                        ans: 1,
+                        exp: "Jumlah neutron N = Nomor Massa (35) - Nomor Atom (17) = 18."
+                    },
+                    {
+                        q: "Soal 3 dari 10: Konfigurasi elektron Bohr untuk Kalsium (₂₀Ca) adalah...",
+                        opts: ["2, 8, 10", "2, 8, 8, 2", "2, 18, 0"],
+                        ans: 1,
+                        exp: "Konfigurasi ₂₀Ca adalah K=2, L=8, M=8, N=2."
+                    },
+                    {
+                        q: "Soal 4 dari 10: Berapakah jumlah elektron pada Ion Kation Na⁺ (₁₁Na)?",
+                        opts: ["11 Elektron", "12 Elektron", "10 Elektron"],
+                        ans: 2,
+                        exp: "Na⁺ melepas 1 elektron dari 11 elektron netral ➔ 10 Elektron."
+                    },
+                    {
+                        q: "Soal 5 dari 10: Siapa penemu partikel elektron yang mengemukakan model atom 'Roti Kismis'?",
+                        opts: ["John Dalton", "J.J. Thomson", "Niels Bohr"],
+                        ans: 1,
+                        exp: "J.J. Thomson menemukan elektron dan mengemukakan model atom Roti Kismis."
+                    },
+                    {
+                        q: "Soal 6 dari 10: Pasangan atom ⁴⁰₁₉K dan ⁴⁰₂₀Ca disebut sebagai...",
+                        opts: ["Isotop", "Isobar", "Isoton"],
+                        ans: 1,
+                        exp: "Isobar memiliki nomor massa (A) yang sama, yaitu 40."
+                    },
+                    {
+                        q: "Soal 7 dari 10: Berapa kapasitas maksimum elektron pada Kulit L (n = 2)?",
+                        opts: ["2 Elektron", "8 Elektron", "18 Elektron"],
+                        ans: 1,
+                        exp: "Sesuai rumus 2n², kapasitas maksimum Kulit L (n=2) adalah 2(2²) = 8 elektron."
+                    },
+                    {
+                        q: "Soal 8 dari 10: Jika atom Netral Fluorin (₉F) menerima 1 elektron menjadi Anion F⁻, berapa jumlah elektronnya?",
+                        opts: ["9 Elektron", "10 Elektron", "8 Elektron"],
+                        ans: 1,
+                        exp: "Anion F⁻ menerima 1 elektron tambahan sehingga 9 + 1 = 10 elektron."
+                    },
+                    {
+                        q: "Soal 9 dari 10: Partikel subatomik di dalam inti atom yang tidak bermuatan (netral) adalah...",
+                        opts: ["Proton", "Elektron", "Neutron"],
+                        ans: 2,
+                        exp: "Neutron adalah partikel netral di inti atom yang ditemukan oleh James Chadwick."
+                    },
+                    {
+                        q: "Soal 10 dari 10: Percobaan penembakan lempeng emas tipis dengan sinar alfa dilakukan oleh...",
+                        opts: ["Ernest Rutherford", "John Dalton", "J.J. Thomson"],
+                        ans: 0,
+                        exp: "Ernest Rutherford melakukan percobaan lempeng emas dan menemukan inti atom yang bermuatan positif."
+                    }
+                ];
+
+                const curQ = questions[this.levelState[7].currentQ];
+
+                stage.innerHTML = `
+                    <!-- Level 7 Unique Header Banner -->
+                    <div class="mb-4 pb-2 border-b border-red-500/40 flex justify-between items-center">
+                        <span class="font-orbitron text-xs font-bold text-red-400 flex items-center gap-2">
+                            <i class="fa-solid fa-[#fff] fa-skull text-red-500 animate-pulse"></i> ARENA BATTLE BOSS: DR. NEUTRON
+                        </span>
+                        <span class="text-xs text-red-400 font-orbitron font-bold">SEKTOR 7 (FINAL)</span>
+                    </div>
+
+                    <div class="flex flex-col items-center space-y-6">
+                        <!-- Boss Status Bar -->
+                        <div class="w-full bg-slate-950/90 border border-red-500/60 p-4 rounded-xl flex items-center gap-4 shadow-lg shadow-red-950/40">
+                            <span class="text-4xl animate-bounce">🦹‍♂️</span>
+                            <div class="flex-grow">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-orbitron font-bold text-sm text-red-400">DR. NEUTRON (BOSS)</span>
+                                    <span class="font-orbitron font-bold text-xs text-red-300">${this.levelState[7].bossHP} HP</span>
+                                </div>
+                                <div class="w-full h-3 bg-slate-950 rounded-full overflow-hidden border border-red-500/40">
+                                    <div class="h-full bg-gradient-to-r from-red-600 via-pink-600 to-purple-600 transition-all duration-500" style="width: ${this.levelState[7].bossHP}%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Boss Quiz Question -->
+                        <div class="bg-slate-950 border border-red-500/40 p-5 rounded-xl w-full">
+                            <h4 class="font-orbitron font-bold text-red-300 text-sm mb-4">${curQ.q}</h4>
+                            <div class="space-y-2">
+                                ${curQ.opts.map((opt, idx) => `
+                                    <button onclick="game.answerBossQ(${idx})" class="w-full text-left p-3 rounded-lg bg-slate-900/90 hover:bg-red-950 border border-slate-800 hover:border-red-400 text-slate-200 text-xs font-orbitron transition flex items-center justify-between">
+                                        <span>${opt}</span>
+                                        <i class="fa-solid fa-chevron-right text-red-500"></i>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            answerBossQ(selectedIdx) {
+                const questions = [
+                    { ans: 0, exp: "Isotop adalah unsur dengan nomor atom/proton yang sama (¹²₆C dan ¹³₆C)." },
+                    { ans: 1, exp: "Jumlah neutron N = Nomor Massa (35) - Nomor Atom (17) = 18." },
+                    { ans: 1, exp: "Konfigurasi ₂₀Ca adalah K=2, L=8, M=8, N=2." },
+                    { ans: 2, exp: "Na⁺ melepas 1 elektron dari 11 elektron netral ➔ 10 Elektron." },
+                    { ans: 1, exp: "J.J. Thomson menemukan elektron dan mengemukakan model atom Roti Kismis." },
+                    { ans: 1, exp: "Isobar memiliki nomor massa (A) yang sama, yaitu 40." },
+                    { ans: 1, exp: "Sesuai rumus 2n², kapasitas maksimum Kulit L (n=2) adalah 2(2²) = 8 elektron." },
+                    { ans: 1, exp: "Anion F⁻ menerima 1 elektron tambahan sehingga 9 + 1 = 10 elektron." },
+                    { ans: 2, exp: "Neutron adalah partikel netral di inti atom yang ditemukan oleh James Chadwick." },
+                    { ans: 0, exp: "Ernest Rutherford melakukan percobaan lempeng emas dan menemukan inti atom yang bermuatan positif." }
+                ];
+
+                const curQ = questions[this.levelState[7].currentQ];
+
+                if (selectedIdx === curQ.ans) {
+                    this.levelState[7].bossHP -= 10;
+                    if (this.levelState[7].bossHP < 0) this.levelState[7].bossHP = 0;
+
+                    this.showFeedback(true, "SERANGAN BERHASIL! DR. NEUTRON TERDESAK!", curQ.exp, () => {
+                        this.levelState[7].currentQ++;
+                        if (this.levelState[7].currentQ >= questions.length) {
+                            this.completeCurrentLevel();
+                        } else {
+                            this.renderBossStage(document.getElementById('levelStageArea'), document.getElementById('levelActionButtonContainer'));
+                        }
+                    });
+                } else {
+                    this.showFeedback(false, "DR. NEUTRON MENYERANG BALIK!", "Jawabanmu kurang tepat. Pelajari kembali teorinya!", null);
+                }
+            }
+        }
+
+        // Initialize Global Game Engine Instance
+        const game = new GameEngine();
+
+        window.onload = function() {
+            game.updateDashboardUI();
+        };
+    </script>
+</body>
+</html>
